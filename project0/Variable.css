@@ -1,0 +1,32 @@
+.MENU, .content, .about {
+  font-family: sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  border: 1px solid black;
+  padding: 20px;
+  margin: 20px;
+}
+
+.resturant {
+  text-align: center;
+  color: coral;
+  padding: 20px;
+  margin: 20px;
+  font-weight: bold;
+}
+
+.MENU {
+  background-color: khaki;
+  color: black;
+}
+
+.content {
+  background-color: lightblue;
+  color: black;
+}
+
+.about {
+  background-color: lightseagreen;
+  color: black;
+}
+/*# sourceMappingURL=Variable.css.map */
