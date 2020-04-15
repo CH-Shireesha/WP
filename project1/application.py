@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session
+from flask import Flask, session, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -23,4 +23,13 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    return "Project 1: TODO"
+    return render_template("registerForm.html")
+
+@app.route("/Details", methods=["POST"])
+def form():
+    name = request.form.get("Username")
+    mail = request.form.get("email_id")
+    gender = request.form.get("gender")
+    age = request.form.get("Age")
+    Birthday = request.form.get("birthday")
+    return render_template("Details.html", name=name, mail=mail, gender=gender, age=age, Birthday=Birthday)
