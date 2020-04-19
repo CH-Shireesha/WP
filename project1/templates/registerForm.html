@@ -6,25 +6,25 @@
 
 {% block body %}
         <div class="alert alert-info">
-            <form action="{{ url_for('form') }}" method="post">
-                <label for="username">Username:</label>
-                <p><input class="input padding-16" type="text" placeholder="Username" required name="Username"></p>
-                <label for="password">password:</label>
-                <p><input class="input padding-16" type="password" placeholder="password" required name="password"></p>
+            <form action="{{ url_for('register') }}" method="post">
+                <label for="name">name</label>
+                <p><input type="text" placeholder="name" required name="name"></p>
+                <label for="password">password</label>
+                <p><input type="password" placeholder="password" required name="password"></p>
                 <p>
-                    <label for="email_id">Enter your email:</label><br>
-                    <input class="input padding-16" type="email" placeholder="email_id" required name="email_id">
+                    <label for="mail">mail</label><br>
+                    <input class="input padding-16" type="mail" placeholder="mail" required name="mail">
                 </p>
-                <label for="Age">Age:</label>
-                <p><input class="input padding-16" type="number" placeholder="Age" required name="Age"></p>
-                <label for="gender">Gender:</label>
+                <label for="age">age</label>
+                <p><input  type="number" placeholder="age" required name="age"></p>
+                <label for="gender">gender</label>
                 <p><input type="radio" id="male" name="gender" value="male">
                     <label for="male">Male</label><br>
                     <input type="radio" id="female" name="gender" value="female">
                     <label for="female">Female</label><br>
                     <input type="radio" id="other" name="gender" value="other">
                     <label for="other">Other</label></p>
-                <p> <label for="birthday">Date Of Birth:</label>
+                <p> <label for="birthday">birthday</label>
                     <input type="date" id="birthday" name="birthday"></p>
                 <p><button class="button light-grey section" type="submit">REGISTER</button></p>
             </form>
