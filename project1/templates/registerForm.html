@@ -6,6 +6,7 @@
 
 {% block body %}
         <div class="alert alert-info">
+            <p>message</p>
             <form action="{{ url_for('register') }}" method="post">
                 <label for="name">name</label>
                 <p><input type="text" placeholder="name" required name="name"></p>
@@ -26,7 +27,8 @@
                     <label for="other">Other</label></p>
                 <p> <label for="birthday">birthday</label>
                     <input type="date" id="birthday" name="birthday"></p>
-                <p><button class="button light-grey section" type="submit">REGISTER</button></p>
+                <button class="btn btn-secondary btn-lg" type="submit">REGISTER</button>
+                <button type="submit" class="btn btn-secondary btn-lg" formaction='/auth'>LOGIN</button>
             </form>
         </div>
 {% endblock %}
