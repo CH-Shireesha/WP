@@ -60,7 +60,7 @@ def auth():
                 return "Wrong password!!"
         else:
             return render_template("registerForm.html", message = "Register to login")
-
+            
 @app.route('/logout', methods=['POST','GET'])
 def logout():
     session['mail'] = None
