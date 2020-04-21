@@ -25,21 +25,30 @@ db.init_app(app)
 # session=Session()
 @app.route("/")
 def index():
-    return "project 1:TODO"
+    name = session.get('name')
+    if session.get('mail') is None:
+        return render_template("registerForm.html")
+    return render_template("Home.html", name=name)
+
+
+
 @app.route("/register", methods = ['POST', 'GET'])
 def register():
-    if request.method =='POST':
-        data=user(request.form['name'],request.form['password'],request.form['mail'],
-        request.form['gender'],request.form['age'],request.form['birthday'])
-        userdata=user.query.filter_by(mail=request.form['mail']).first()
-        if userdata is not None:
-            return render_template("error.html")
-        db.session.add(data)
-        db.session.commit()
-        print("Sucesssfully Registered")
-        return render_template("sucess.html")
-    else:
-        return render_template("registerForm.html")
+    name = session.get('name')
+    if session.get('mail') is None:
+        if request.method =='POST':
+            data=user(request.form['name'],request.form['password'],request.form['mail'],
+            request.form['gender'],request.form['age'],request.form['birthday'])
+            userdata=user.query.filter_by(mail=request.form['mail']).first()
+            if userdata is not None:
+                return render_template("registerForm.html", message="Error!!Email_Id already exists")
+            db.session.add(data)
+            db.session.commit()
+            print("Sucesssfully Registered")
+            return render_template("registerForm.html", message="Sucesssfully Registered")
+        else:
+            return render_template("registerForm.html")
+    return render_template("Home.html", name=name)
 
 @app.route('/admins')
 def admin():
@@ -49,13 +58,15 @@ def admin():
 @app.route('/auth',methods=['POST','GET'])
 def auth():
     if request.method =='POST':
+        name = request.form.get("name")
         email = request.form.get("mail")
         pwd = request.form.get("password")
         details = user.query.get(email)
         if details != None:
             if pwd == details.password:
                 session['mail'] = email
-                return render_template("Home.html")
+                session['name'] = name
+                return render_template("Home.html", name=name)
             else:
                 return "Wrong password!!"
         else:

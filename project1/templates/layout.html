@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <title>Webpage</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <style>
-        body{
-            background-color: antiquewhite;
-        }
-    </style>
+    <head>
+        {% block head %}
+        <title>Webpage</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <style>
+            body{
+                background-color: antiquewhite;
+            }
+        </style>
+        {% endblock %}
+    </head>
     <body>
         <div class="alert alert-primary" role="alert">
             <h1>{% block heading %}{% endblock %}</h1>
