@@ -29,12 +29,12 @@ def index():
 @app.route("/register", methods = ['POST', 'GET'])
 def register():
     if request.method =='POST':
-        udata=user(request.form['name'],request.form['password'],request.form['mail'],
+        data=user(request.form['name'],request.form['password'],request.form['mail'],
         request.form['gender'],request.form['age'],request.form['birthday'])
         userd=user.query.filter_by(mail=request.form['mail']).first()
         if userd is not None:
             return render_template("error.html")
-        db.session.add(udata)
+        db.session.add(data)
         db.session.commit()
         print("Sucesssfully Registered")
         return render_template("sucess.html")
@@ -45,10 +45,3 @@ def register():
 def admin():
     usersinfo = user.query.all()
     return render_template("Details.html",register = usersinfo)
-
-
-
-
-
-
-
