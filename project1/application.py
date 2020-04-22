@@ -20,28 +20,62 @@ Session(app)
 db.init_app(app)
 
 # Set up database
-engine = create_engine(os.getenv("DATABASE_URL"))
-Session = scoped_session(sessionmaker(bind=engine))
-session=Session()
+# engine = create_engine(os.getenv("DATABASE_URL"))
+# Session = scoped_session(sessionmaker(bind=engine))
+# session=Session()
 @app.route("/")
 def index():
-    return "project 1:TODO"
+    name = session.get('name')
+    if session.get('mail') is None:
+        return render_template("registerForm.html")
+    return render_template("Home.html", name=name)
+
+
+
 @app.route("/register", methods = ['POST', 'GET'])
 def register():
-    if request.method =='POST':
-        data=user(request.form['name'],request.form['password'],request.form['mail'],
-        request.form['gender'],request.form['age'],request.form['birthday'])
-        userd=user.query.filter_by(mail=request.form['mail']).first()
-        if userd is not None:
-            return render_template("error.html")
-        db.session.add(data)
-        db.session.commit()
-        print("Sucesssfully Registered")
-        return render_template("sucess.html")
-    else:
-        return render_template("registerForm.html")
+    name = session.get('name')
+    if session.get('mail') is None:
+        if request.method =='POST':
+            data=user(request.form['name'],request.form['password'],request.form['mail'],
+            request.form['gender'],request.form['age'],request.form['birthday'])
+            userdata=user.query.filter_by(mail=request.form['mail']).first()
+            if userdata is not None:
+                return render_template("registerForm.html", message="Error!!Email_Id already exists")
+            db.session.add(data)
+            db.session.commit()
+            print("Sucesssfully Registered")
+            return render_template("registerForm.html", message="Sucesssfully Registered")
+        else:
+            return render_template("registerForm.html")
+    return render_template("Home.html", name=name)
 
 @app.route('/admins')
 def admin():
-    usersinfo = user.query.all()
-    return render_template("Details.html",register = usersinfo)
+    users = user.query.all()
+    return render_template("Details.html",register = users)
+
+@app.route('/auth',methods=['POST','GET'])
+def auth():
+    if request.method =='POST':
+        name = request.form.get("name")
+        email = request.form.get("mail")
+        pwd = request.form.get("password")
+        details = user.query.get(email)
+        if details != None:
+            if pwd == details.password:
+                session['mail'] = email
+                session['name'] = name
+                return render_template("Home.html", name=name)
+            else:
+                return "Wrong password!!"
+        else:
+            return render_template("registerForm.html", message = "Register to login")
+            
+@app.route('/logout', methods=['POST','GET'])
+def logout():
+    session['mail'] = None
+    return redirect('/register')
+
+
+
