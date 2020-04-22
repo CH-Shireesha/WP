@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    DETAILS
+{% endblock %}
+
+{% block body %}
+    <h2>Registration Data Form</h2>
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Mail_Id</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Age</th>
+                <th scope="col">D.O.B</th>
+            </tr>
+          </thead>
+        <tbody>
+        {% for i in register %}
+         <tr>
+             <td>{{i.name}}</td>
+             <td>{{i.mail}}</td>
+             <td>{{i.gender}}</td>
+             <td>{{i.age}}</td>
+             <td>{{i.birthday}}</td>
+         </tr> 
+        {% endfor %}
+        </tbody> 
+        </table>
+
+{% endblock %}
+
