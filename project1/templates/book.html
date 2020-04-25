@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Registration</title>
+    </head>
+    <body>
+        <div class="table">
+            <ul class="list-group">
+            <li class="list-group-item">author</li>
+            <li class="list-group-item">isbn</li>
+            <li class="list-group-item">year</li>
+            </ul>
+            <ul class='b'>
+            {% for item in data %}
+            <li class="list-group-item"><b>isbn:</b>  {{item.isbn}}</li>
+            <li class="list-group-item"><b>title:</b>  {{item.title}}</li>
+            <li class="list-group-item"><b>author:</b>  {{item.author}}</li>
+            <li class="list-group-item"><b>year:</b>  {{item.year}}</li>
+            {% endfor %}
+            </ul>
+            <a href="#" class="button">Review</a>
+        </div>
+    </body>
+</html>

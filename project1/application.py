@@ -1,6 +1,7 @@
 import os
 
 from database import *
+from bookdetails import *
 from flask import Flask, session,render_template, request,redirect
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -17,12 +18,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-db.init_app(app)
+
 
 # Set up database
-# engine = create_engine(os.getenv("DATABASE_URL"))
-# Session = scoped_session(sessionmaker(bind=engine))
-# session=Session()
+engine = create_engine(os.getenv("DATABASE_URL"))
+DB = scoped_session(sessionmaker(bind=engine))
+SESSION=DB()
+
+
 @app.route("/")
 def index():
     name = session.get('name')
@@ -42,8 +45,8 @@ def register():
             userdata=user.query.filter_by(mail=request.form['mail']).first()
             if userdata is not None:
                 return render_template("registerForm.html", message="Error!!Email_Id already exists")
-            db.session.add(data)
-            db.session.commit()
+            SESSION.add(data)
+            SESSION.commit()
             print("Sucesssfully Registered")
             return render_template("registerForm.html", message="Sucesssfully Registered")
         else:
@@ -71,11 +74,15 @@ def auth():
                 return "Wrong password!!"
         else:
             return render_template("registerForm.html", message = "Register to login")
+
+@app.route("/book/<isbn>")
+def book(isbn):
+    booksdata = SESSION.query(Book).filter(Book.isbn == isbn)
+    return render_template("book.html", data = booksdata )
+
             
 @app.route('/logout', methods=['POST','GET'])
 def logout():
     session['mail'] = None
     return redirect('/register')
-
-
 
