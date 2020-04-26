@@ -85,4 +85,3 @@ def book(isbn):
 def logout():
     session['mail'] = None
     return redirect('/register')
-
