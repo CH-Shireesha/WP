@@ -75,7 +75,7 @@
             <tbody>
                 {% for book in books %}
                 <tr>
-                    <td><a href="/Book">{{ book.isbn }}</a</td>
+                    <td><a href="{{''.join(['/book/isbn=',book.isbn])}}">{{ book.isbn }}</a</td>
                     <td> {{ book.title }}</td>
                     <td> {{ book.author }}</td>
                     <td> {{ book.year }}</td>

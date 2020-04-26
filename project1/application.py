@@ -86,8 +86,6 @@ def search():
         search = request.form.get("search")   
         book = []
         message = ""
-        # Avoid SQL Injection Using Bindings
-        # sql = "SELECT isbn, author, title FROM books WHERE :a LIKE :x"
         matchString = "%{}%".format(search)
         print(matchString)
         if searchType == 'isbn':
@@ -102,26 +100,9 @@ def search():
         return render_template("Home.html", name=name, books = book, message = message)
 
     return render_template("Home.html", name=name)
-        # stmt = db.text(sql).bindparams(a=searchType, x=matchString)
 
-            # stmt = Book.query.filter(Book.isbn.like(matchString)).all()
-            # print(stmt)
-        # results = db.session.execute(stmt).fetchall()
-        # print(results)
 
-        # session["book"] = []
-
-        # for book in Book:
-        #     # A row is not JSON serializable so we pull out the 
-        #     # print(type(row))
-        #     # print(books)
-        #     Book = dict()
-        #     Book["isbn"] = book[0]
-        #     Book["author"] = book[1]
-        #     Book["title"] = book[2]
-        #     session["book"].append(book)
-
-@app.route('/Book')
-def book():
-    return render_template("Book.html")
+@app.route("/book/<string:arg>")
+def book(arg):
+    return render_template("Book.html", isbn = arg)
 
