@@ -29,12 +29,10 @@ def index():
     if session.get('mail') is None:
         return render_template("registerForm.html")
     return render_template("Home.html", name=name)
-
-
-
 @app.route("/register", methods = ['POST', 'GET'])
 def register():
     name = session.get('name')
+    print(name)
     if session.get('mail') is None:
         if request.method =='POST':
             data=user(request.form['name'],request.form['password'],request.form['mail'],
@@ -76,6 +74,9 @@ def auth():
 def logout():
     session['mail'] = None
     return redirect('/register')
+
+
+
 
 
 
