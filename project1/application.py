@@ -74,6 +74,35 @@ def auth():
 def logout():
     session['mail'] = None
     return redirect('/register')
+@app.route('/review',methods=['POST','GET'])
+def rev():
+    if session.get("mail") is None:
+        return redirect("/register")
+    # ISBN = request.form.get("ISBN")
+    # else:
+    isbn = "1857231082"
+    book = db.session.query(Book).filter_by(isbn = isbn).first()
+    feedback = db.session.query(review).filter_by(title=book.title).all()
+    #print(obj)
+    name=session.get('name')
+    print(name)
+    if request.method=='POST':
+        title = book.title
+        rating=request.form.get("rating")
+        feedback1=request.form.get("feedback")
+        Rdata=review(name,title,rating,feedback1)
+        try:
+            db.session.add(Rdata)
+            db.session.commit()
+            feedback=db.session.query(review).filter_by(title=book.title).all()
+            r=review.query.filter_by(title=book.title).all()
+            return render_template("review.html",comments=r,name=name,feedback=feedback,message="Thank you!! for the feedback")
+        except:
+            db.session.rollback()
+            return render_template("review.html",message="user has already given review")
+    else :              
+        return render_template("review.html",name=name,feedback=feedback)
+
 
 
 
