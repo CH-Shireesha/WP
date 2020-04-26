@@ -3,17 +3,20 @@
     <head>
         <title>Registration</title>
     </head>
+    <style>
+        div {
+            background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fbackground%2F&psig=AOvVaw3skeDcxBu73cMzb_7fG1aO&ust=1588002684227000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCICswOO5hukCFQAAAAAdAAAAABAD');
+        }
+    </style>
     <body>
-        <div class="card">
-            <ul class='b'>
+            <center>
             {% for item in data %}
-            <li class="list-group-item"><b>isbn:</b>  {{item.isbn}}</li>
-            <li class="list-group-item"><b>title:</b>  {{item.title}}</li>
-            <li class="list-group-item"><b>author:</b>  {{item.author}}</li>
-            <li class="list-group-item"><b>year:</b>  {{item.year}}</li>
+            <class="list-group-item"><b>isbn:</b>  {{item.isbn}}<br><br>
+            <class="list-group-item"><b>title:</b>  {{item.title}}<br><br>
+            <class="list-group-item"><b>author:</b>  {{item.author}}<br><br>
+            <class="list-group-item"><b>year:</b>  {{item.year}}<br><br><br>
             {% endfor %}
-            </ul>
             <a href="#" class="button">Review</a>
-        </div>
+            </center>
     </body>
 </html>
