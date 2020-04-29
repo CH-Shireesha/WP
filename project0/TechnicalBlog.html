@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Web Page!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <style>
+            p{
+                color:rgb(143, 86, 11);
+            }
+            ul{
+                color: red;
+            }
+            body{
+                margin: 100px;
+                margin-top: 1px;
+            }
+            p::selection {
+                color: red;
+                background-color: yellow;
+            }
+            @media print {
+                ul {
+                    display: none;
+                }
+            }
+        </style>
+        <div class="alert alert-primary" role="alert">
+            <h1>TECHNICAL BLOG</h1>
+        </div>
+    </head>
+    <body>
+        <div class="head">
+            <img src="TechHead.jpg" width=100% height=40% >
+            <h2>Intro</h2>
+            <p>Technical blogging is a great way to share your expertise while building a potentially valuable readership. 
+                It can help you to document projects, or provide guidance to other web users.
+                 You can also monetize your content, or use your blog to market your services.</p>
+            <p>While technical blogs have the same general characteristics as non-technical blogs, 
+                refining your blogging technique will help to make the technical content of your blogs more accessible.</p>
+        </div>
+        <div id="structure">
+            <h2>Structure</h2>
+            <p>When it comes to structure, the same rules apply to technical blogging as they do with non-technical blogging.</p>
+            <p>The goal of your structure should be to make the information easy to scan, and easy to digest.</p>
+            <p>We know that readers look at web pages in predictable patterns; their gaze follows an ‘F’ shape on the screen. 
+                First, they scan the top line and then track down the left-hand side. 
+                They will then scan across the center, looking for relevant information.
+                A clear structure — with plenty of white space — is very important when you’re writing about a technical subject.
+                If you cram lots of detail into every paragraph, your reader will quickly become fatigued. The principle of adding white space 
+                applies to technical blogging as it does to paper documentation.</p>
+            <p>Each time you begin a new post, try to follow a conventional structure that readers find easy to scan. You should include:</p>
+            <ul>
+                <li>An introduction, which frames the piece and explains what’s to come. 
+                    It usually makes sense to write the introduction after you’ve written the body copy.</li>
+                <li>Use a logical heading structure, and ensure your CSS is formatting the headings appropriately.</li>
+                <li>Use numbers for procedures or a set number of list items. Use unordered lists for everything else.</li>
+                <li>Incorporate placeholders for relevant images, graphs, or infographics. Aim to have some kind of visual element every 500 words.</li>
+                <li>End with a conclusion, which sums up the information you’ve presented, or invites questions on the blog. Don’t leave the reader hanging.</li>
+            </ul>
+        </div>
+    </body>
+</html>
