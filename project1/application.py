@@ -1,4 +1,4 @@
-import os
+import os, requests
 
 from database import *
 from flask import Flask, session,render_template, request,redirect
@@ -12,17 +12,18 @@ if not os.getenv("DATABASE_URL"):
    raise RuntimeError("DATABASE_URL is not set")
 
 app.config['SQLALCHEMY_DATABASE_URI'] =os.getenv("DATABASE_URL")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DATABASE_URL.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Configure session to use filesystem      
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 db.init_app(app)
-
 # Set up database
-# engine = create_engine(os.getenv("DATABASE_URL"))
-# Session = scoped_session(sessionmaker(bind=engine))
-# session=Session()
+engine = create_engine(os.getenv("DATABASE_URL"))
+Session = scoped_session(sessionmaker(bind=engine))
+DB = Session()
+# session=Session() ++-*/9+ 
 @app.route("/")
 def index():
     name = session.get('name')
@@ -77,5 +78,30 @@ def logout():
     session['mail'] = None
     return redirect('/register')
 
+@app.route('/search', methods=['POST','GET'])
+def search():
+    if request.method == "POST":
+        name = session.get('name')
+        searchType = request.form.get("searchType")
+        search = request.form.get("search")   
+        book = []
+        message = ""
+        matchString = "%{}%".format(search)
+        print(matchString)
+        if searchType == 'isbn':
+            book = DB.query(Book).filter(Book.isbn.like(matchString)).all()
+        elif searchType == 'title':
+            book = DB.query(Book).filter(Book.title.like(matchString)).all()
+        elif searchType == 'author':
+            book = DB.query(Book).filter(Book.author.like(matchString)).all()
+        if len(book)== 0:
+            message = "No Matching results found!"
+        print (book)
+        return render_template("Home.html", name=name, books = book, message = message)
+
+    return render_template("Home.html", name=name)
 
 
+@app.route("/book/<string:arg>")
+def book(arg):
+    return render_template("Book.html", isbn = arg)
