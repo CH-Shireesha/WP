@@ -1,5 +1,31 @@
 {% extends "layout.html" %}
 
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .input-group {
+            width: 600px;
+            margin: 50px auto;
+        }
+        .form-group  {
+            margin-bottom: 15px;
+            background: #f7f7f7;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 600px;
+            margin: 50px auto;
+        }
+        .form-control, .btn {
+            min-height: 38px;
+            border-radius: 2px;
+        }
+        .message {
+            text-align: center;
+            color: red;
+        }
+    </style>
+{% endblock %}
+
 {% block heading %}
 {% endblock %}
 
@@ -8,10 +34,9 @@
 <h2 align="center">WELCOME TO THE HOME PAGE</h2>
 <h3>Helloo {{name}} !!</h3>
 <p>Sucessfully Logged into the page</p>
-<div class = "LoogoutButton" align="right">
+<div class = "LogoutButton" align="right">
     <form action="/logout">
         <button class="btn btn-secondary btn-lg" type="submit">LOGOUT</button>
     </form>
 </div>
-
 {% endblock %}
