@@ -6,6 +6,7 @@ from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+
 app = Flask(__name__)
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
@@ -75,10 +76,14 @@ def auth():
 def logout():
     session['mail'] = None
     return redirect('/register')
+
+
 @app.route("/book/<string:isbn>")
 def book(isbn):
     booksdata = db.session.query(Book).filter(Book.isbn == isbn)
     return redirect("/review")
+
+
 @app.route('/review',methods=['POST','GET'])
 def rev():
     if session.get("mail") is None:
@@ -135,3 +140,4 @@ def search():
 # @app.route("/book/<string:arg>")
 # def book(arg):
 #     return render_template("Book.html", isbn = arg)
+
