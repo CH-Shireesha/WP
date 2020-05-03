@@ -27,16 +27,16 @@
 {% endblock %}
 
 {% block body %}
-            <form class="qwerty" action="{{ url_for('rev') }}" method="post">
+            <form class="qwerty" action="{{url_for('rev',arg=''.join(['isbn=',data.isbn]))}}"method="post">
                 <br><br>
                 <div class="card">
                     <ul class='b'>
-                    {% for item in data %}
-                    <li class="list-group-item"><b>isbn:</b>  {{item.isbn}}</li>
-                    <li class="list-group-item"><b>title:</b>  {{item.title}}</li>
-                    <li class="list-group-item"><b>author:</b>  {{item.author}}</li>
-                    <li class="list-group-item"><b>year:</b>  {{item.year}}</li>
-                    {% endfor %}
+                    {% if data %}
+                    <li class="list-group-item"><b>isbn:</b>  {{data.isbn}}</li>
+                    <li class="list-group-item"><b>title:</b>  {{data.title}}</li>
+                    <li class="list-group-item"><b>author:</b>  {{data.author}}</li>
+                    <li class="list-group-item"><b>year:</b>  {{data.year}}</li>
+                    {% endif %}
                     </ul>
                 </div>
                   <h3>Hello {{name}},review the book</h3><br><br>
