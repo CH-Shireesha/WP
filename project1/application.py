@@ -30,12 +30,10 @@ def index():
     if session.get('mail') is None:
         return render_template("registerForm.html")
     return render_template("Home.html", name=name)
-
-
-
 @app.route("/register", methods = ['POST', 'GET'])
 def register():
     name = session.get('name')
+    print(name)
     if session.get('mail') is None:
         if request.method =='POST':
             data=user(request.form['name'],request.form['password'],request.form['mail'],
@@ -77,6 +75,38 @@ def auth():
 def logout():
     session['mail'] = None
     return redirect('/register')
+@app.route("/book/<string:isbn>")
+def book(isbn):
+    booksdata = db.session.query(Book).filter(Book.isbn == isbn)
+    return redirect("/review")
+@app.route('/review',methods=['POST','GET'])
+def rev():
+    if session.get("mail") is None:
+        return redirect("/register")
+    isbn = "1857231082"
+    booksdata = db.session.query(Book).filter(Book.isbn == isbn)
+    book = db.session.query(Book).filter_by(isbn = isbn).first()
+    feedback = db.session.query(review).filter_by(title=book.title).all()
+    name=session.get('name')
+    print(name)
+    if request.method=='POST':
+        title = book.title
+        rating=request.form.get("rating")
+        feedback1=request.form.get("feedback")
+        Rdata=review(name,title,rating,feedback1)
+        try:
+            db.session.add(Rdata)
+            db.session.commit()
+            feedback=db.session.query(review).filter_by(title=book.title).all()
+            r=review.query.filter_by(title=book.title).all()
+            return render_template("review.html",data=booksdata,name=name,feedback=feedback,message="Thank you!! for the feedback")
+        except:
+            db.session.rollback()
+            return render_template("review.html",data=booksdata,message="user has already given review")
+    else :              
+        return render_template("review.html",data=booksdata,name=name,feedback=feedback)
+
+
 
 @app.route('/search', methods=['POST','GET'])
 def search():
@@ -102,6 +132,6 @@ def search():
     return render_template("Home.html", name=name)
 
 
-@app.route("/book/<string:arg>")
-def book(arg):
-    return render_template("Book.html", isbn = arg)
+# @app.route("/book/<string:arg>")
+# def book(arg):
+#     return render_template("Book.html", isbn = arg)

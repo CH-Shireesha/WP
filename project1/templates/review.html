@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .qwerty {
+            width: 600px;
+            margin: 50px auto;
+        }
+        .qwerty {
+            margin-bottom: 15px;
+            background: #f7f7f7;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+        .qwerty, .btn {
+            min-height: 38px;
+            border-radius: 2px;
+        }
+        .btn {        
+            font-size: 15px;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+{% block heading %}
+    REVIEW
+{% endblock %}
+
+{% block body %}
+            <form class="qwerty" action="{{ url_for('rev') }}" method="post">
+                <br><br>
+                <div class="card">
+                    <ul class='b'>
+                    {% for item in data %}
+                    <li class="list-group-item"><b>isbn:</b>  {{item.isbn}}</li>
+                    <li class="list-group-item"><b>title:</b>  {{item.title}}</li>
+                    <li class="list-group-item"><b>author:</b>  {{item.author}}</li>
+                    <li class="list-group-item"><b>year:</b>  {{item.year}}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                  <h3>Hello {{name}},review the book</h3><br><br>
+                <div class="form-group">
+                    <label for="rating">RATING:</label>
+                    <input type="radio" id="1" name="rating" value="1">
+                    <label for="1">1</label>
+                    <input type="radio" id="2" name="rating" value="2">
+                    <label for="2">2</label>
+                    <input type="radio" id="3" name="rating" value="3">
+                    <label for="3">3</label>
+                    <input type="radio" id="4" name="rating" value="4">
+                    <label for="4">4</label>
+                    <input type="radio" id="5" name="rating" value="5">
+                    <label for="5">5</label>
+                </div><br>
+                  <label for="feedback">FeedBack:</label>
+                  <input type="feedback" class="form-control" placeholder="feedback" required name="feedback">
+                  <button class="btn btn-primary btn-block" type="submit">SUBMIT</button>
+                </form>
+                <div><h4 align="center">{{message}}</h4></div>
+                {% if feedback %}
+                    <h2> Previous Comments</h2>
+                    {% for i in feedback%}
+                        <div class="tableScroll">
+                        <div class="card " style="width: 40rem; background-color: white;">
+                        <div class="card-body">
+                        <h5 class="card-title">Name: {{i.userName}} <br> Title: {{i.title}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Rating: {{i.rating}}</h6>
+                        <p class="card-text">feedback: {{i.feedback}}</p>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+{% endblock %}
