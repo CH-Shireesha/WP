@@ -60,5 +60,43 @@
     </form>
 </div>
 <div id='searchresults'></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script type="text/javascript">
+$("#searchform").submit(function(e) {
+    e.preventDefault(); 
+    var url = "/api/search"
+    var formData = jQuery('#searchform').serializeArray();
+    responseobj = {}
+    for(var i = 0; i< formData.length; i++) {
+      console.log(formData)
+      responseobj['query'] = formData[i]["value"]
+    }
+    console.log(formData);
+    console.log(responseobj);
+    $.ajax({
+          type: "POST",
+          url: url,
+          data: JSON.stringify(responseobj),
+          contentType: "application/json",
+          success: function(data)
+          {
+            console.log(data["0"]);
+            var htmltext = "<br><div class = 'container'> <div class = 'tableFixHead'>"+
+    "<table class='table'>"+
+    "<thead><tr><th> {{ 'Isbn' }}</th><th> {{ 'Title' }}</th><th> {{ 'Author' }}</th>"+
+    "<th> {{ 'Year' }}</th></tr></thead><tbody>";
+            for(var i = 0; i < data.length; i++) {
+              htmltext = htmltext +"<tr>" + "<td>"+data[i]["isbn"] +"</td>"+ "<td>" + data[i]["title"] +"</td>"+
+                            "<td>" + data[i]["author"] +"</td>"+ "<td>" + data[i]["year"] + "</tr>"
+            }
+            htmltext = htmltext + "</ul>"
+            $("#searchresults").html(htmltext);
+          }
+        });
+    });
+</script>
 
 {% endblock %}
