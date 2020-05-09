@@ -1,10 +1,11 @@
 import os, requests
 
 from database import *
-from flask import Flask, session,render_template, request,redirect
+from flask import Flask, session,render_template, request,redirect,url_for,flash,jsonify
 from flask_session import Session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import scoped_session, sessionmaker
+import json
 
 
 app = Flask(__name__)
@@ -133,7 +134,34 @@ def search():
     return render_template("Home.html", name=name)
 
 
-# @app.route("/book/<string:arg>")
-# def book(arg):
-#     return render_template("Book.html", isbn = arg)
+@app.route('/api/search', methods = ["POST"])
+def apisearch():
+    print(request)
+    print(request.is_json)
+    if not request.is_json:
+        message = "Invalid request format"
+        return jsonify(message),400
+    reqs = request.get_json()['query']
+    print(reqs)
+    try:
+        bookss = DB.query(Book.isbn, Book.title, Book.author, Book.year).filter(or_(Book.title.like("%"+reqs+"%"), 
+        Book.author.like("%"+reqs+"%"), Book.isbn.like("%"+reqs+"%"))).all()
+    except:
+        message = "Please Try again Later"
+        return jsonify(message), 500
+    print(bookss)
+    if len(bookss)==0:
+        message = "No search results found"
+        return jsonify(message),404
+    response = []
+    for book in bookss:
+        dictionary = {}
+        dictionary["isbn"] = book[0]
+        dictionary['title'] = book[1]
+        dictionary['author'] = book[2]
+        dictionary['year'] = book[3]
+        response.append(dictionary)
+    return jsonify(response) , 200
+
+
 
