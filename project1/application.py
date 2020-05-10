@@ -133,8 +133,8 @@ def submitreview():
         db.session.add(reviewdata)
         db.session.commit()
     except:
-        message = "Please Try Again "
-        return jsonify(message), 500
+        message = "Sorry you can't review this book again"
+        return jsonify(message), 409
     # print(isbn,rating,comment)
     message = "Review submitted successfully"
     return jsonify(message), 200
