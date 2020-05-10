@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block body %}
-            <form class="qwerty" action="{{url_for('rev',arg=''.join(['isbn=',data.isbn]))}}"method="post">
+            <form class="qwerty" id="reviewform" action="{{url_for('rev',arg=''.join(['isbn=',data.isbn]))}}"method="post">
                 <br><br>
                 <div class="card">
                     <ul class='b'>
@@ -71,4 +71,5 @@
                     {% endfor %}
                     </div>
                 {% endif %}
+
 {% endblock %}

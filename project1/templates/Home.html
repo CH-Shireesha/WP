@@ -3,7 +3,7 @@
 {% block head %}
     {{ super() }}
     <style type="text/css">
-        .input-group {
+        /* .input-group {
             width: 600px;
             margin: 50px auto;
         }
@@ -22,68 +22,112 @@
         .message {
             text-align: center;
             color: red;
+        } */
+        .qwerty {
+            width: 600px;
+            margin: 50px auto;
+        }
+        .qwerty {
+            margin-bottom: 15px;
+            background: #f7f7f7;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+        .qwerty, .btn {
+            min-height: 38px;
+            border-radius: 2px;
+        }
+        .btn {        
+            font-size: 15px;
+            font-weight: bold;
         }
     </style>
 {% endblock %}
 
 {% block heading %}
 {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
 
+$("#reviewform").submit(function(e) {
+  console.log("entered");
+
+  e.preventDefault(); // avoid to execute the actual submit of the form.
+
+  var isbn ="0061583073"
+  var url = "/api/Sreview?" +  $.param({ 'isbn': isbn })
+  // console.log(form)
+  var formData = jQuery('#reviewform').serializeArray();
+  // console.log(formData);
+  requestobj = {}
+  requestobj['rating'] = formData[0]["value"]
+  requestobj['feedback'] = formData[1]["value"]
+//requestobj['userName'] = $("#name").text()
+  console.log(requestobj)
+  // var search =  JSON.stringify( form.serializeArray() );
+  // console.log(formData);
+// console.log(responseobj);
+  $.ajax({
+        type: "POST",
+        url: url,
+        data: JSON.stringify(requestobj), // serializes the form's elements.
+        contentType: "application/json",
+        success: function(data)
+        {
+          console.log(data);
+        $("#reviewmsg").html("review submmitted sucessfully");
+          console.log("success");
+        },
+        error: function(data)
+        {
+          console.log(data);
+          $("#reviewmsg").html("review not submmitted sucessfully");
+          console.log("failed");
+        }
+      });
+});
+    })
+    </script>
+{% endblock %}
 {% block body %}
 
 <h2 align="center">WELCOME TO THE HOME PAGE</h2>
-<h3>Helloo {{name}} !!</h3>
 <p>Sucessfully Logged into the page</p>
 <div class = "LogoutButton" align="right">
     <form action="/logout">
         <button class="btn btn-secondary btn-lg" type="submit">LOGOUT</button>
     </form>
 </div>
-<div>
-    <form action="/search" method="POST">
-        <p class='message' >Please choose the Type of Search</p>
-        <div class="form-group">
-            <select name="searchType" class="form-control" id="Select1">
-              <option>isbn</option>
-              <option>title</option>
-              <option>author</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search">
-            <button type="submit">Search</button>
-        </div>
-    </form>
-</div>
-
-<div>
-    {% if message %}
-    <p class = message >{{message}}</p>
-    {% endif %}
-    {% if books|length > 0 %} 
-    <div class="container">
-        <h2>Here are the Results!!</h2>
-        <table class="table table-striped table-dark">
-            <thead>
-                <tr>
-                    <th>ISBN</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Year</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in books %}
-                <tr>
-                    <td><a href="{{''.join(['/book/isbn=',book.isbn])}}">{{ book.isbn }}</a</td>
-                    <td> {{ book.title }}</td>
-                    <td> {{ book.author }}</td>
-                    <td> {{ book.year }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<form class="qwerty" id="reviewform">
+    <br><br>
+    <!-- <div class="card">
+        <ul class='b'>
+        {% if data %}
+        <li class="list-group-item"><b>isbn:</b>  {{data.isbn}}</li>
+        <li class="list-group-item"><b>title:</b>  {{data.title}}</li>
+        <li class="list-group-item"><b>author:</b>  {{data.author}}</li>
+        <li class="list-group-item"><b>year:</b>  {{data.year}}</li>
         {% endif %}
-    </div>
-
+        </ul>
+    </div> -->
+    <h3 id ="name">Hello {{name}},Review the book</h3><br><br>
+    <div class="form-group">
+        <label for="rating">RATING:</label>
+        <input type="radio" id="1" name="rating" value="1">
+        <label for="1">1</label>
+        <input type="radio" id="2" name="rating" value="2">
+        <label for="2">2</label>
+        <input type="radio" id="3" name="rating" value="3">
+        <label for="3">3</label>
+        <input type="radio" id="4" name="rating" value="4">
+        <label for="4">4</label>
+        <input type="radio" id="5" name="rating" value="5">
+        <label for="5">5</label>
+    </div><br>
+      <label for="feedback">FeedBack:</label>
+      <input type="feedback" class="form-control" placeholder="feedback" required name="feedback">
+      <button class="btn btn-primary btn-block" type="submit">SUBMIT</button>
+    </form>
+    <div id="reviewmsg"></div>
 {% endblock %}
