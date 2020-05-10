@@ -1,7 +1,7 @@
 import os, requests
-
+import json
 from database import *
-from flask import Flask, session,render_template, request,redirect
+from flask import Flask, session,render_template, request,redirect,jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -133,7 +133,34 @@ def search():
     return render_template("Home.html", name=name)
 
 
-# @app.route("/book/<string:arg>")
-# def book(arg):
-#     return render_template("Book.html", isbn = arg)
-
+@app.route('/api/book')
+def apibook():
+    print("hi")
+    query = request.args.get('isbn')
+    try:
+        print("hello")
+        result = db.session.query(Book).filter(Book.isbn == query).first()
+        print("hello  hi")
+        r=review.query.filter_by(title=result.title).all()
+        print("hi")
+    except:
+        message = "Please Try again Later"
+        return jsonify(message),500
+    print(result)
+    if result is None:
+        message = "No book found"
+        return jsonify(message), 404
+    response = {}
+    reviews = []
+    for rev in r:
+        eachreview = {}
+        eachreview["userName"] = rev.userName
+        eachreview["rating"] = rev.rating
+        eachreview["feedback"] = rev.feedback
+        reviews.append(eachreview)
+    response['isbn'] = result.isbn
+    response['title'] = result.title
+    response['author'] = result.author
+    response['year'] = result.year
+    response['reviews'] = reviews
+    return jsonify(response), 200

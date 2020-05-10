@@ -28,6 +28,36 @@
 
 {% block heading %}
 {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+
+function bookdisplay(ele) {
+    console.log("hello")
+    var requestobj = {}
+    var url = "/api/book"
+    requestobj["isbn"] = ele.id
+    $.ajax({
+          type: "GET",
+          url: url,
+          data: requestobj, 
+          success: function(data)
+          {
+            console.log(data.reviews);
+
+            var htmltext = "<p id = 'isbnofbook'>"+data.isbn +"</p><ul>"+"<p id = 'title'>"+data.title+"</p><ul>"+"<p id = 'author'>"+data.author+"</p><ul>"+"<p id = 'year of publication'>"+data.year+"</p><ul>";
+            for(var i = 0; i < data.reviews.length; i++) {
+            console.log(data[i]);
+
+              //htmltext = htmltext + "<li><p>" + data.reviews[i]["userName"] + " ===> " + data.reviews[i]["feedback"] +"</p></li>"
+            }
+            htmltext = htmltext + "</ul>"
+            $("#reviewresults").html(htmltext);
+            
+          }
+        });
+   }
+</script>
+{% endblock %}
 
 {% block body %}
 
@@ -39,51 +69,8 @@
         <button class="btn btn-secondary btn-lg" type="submit">LOGOUT</button>
     </form>
 </div>
-<div>
-    <form action="/search" method="POST">
-        <p class='message' >Please choose the Type of Search</p>
-        <div class="form-group">
-            <select name="searchType" class="form-control" id="Select1">
-              <option>isbn</option>
-              <option>title</option>
-              <option>author</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search">
-            <button type="submit">Search</button>
-        </div>
-    </form>
+<button onclick = 'bookdisplay(this)' id = '1416949658'>View Book</button>
+<div id="reviewresults">
+
 </div>
-
-<div>
-    {% if message %}
-    <p class = message >{{message}}</p>
-    {% endif %}
-    {% if books|length > 0 %} 
-    <div class="container">
-        <h2>Here are the Results!!</h2>
-        <table class="table table-striped table-dark">
-            <thead>
-                <tr>
-                    <th>ISBN</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Year</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in books %}
-                <tr>
-                    <td><a href="{{''.join(['/review/isbn=',book.isbn])}}">{{ book.isbn }}</a</td>
-                    <td> {{ book.title }}</td>
-                    <td> {{ book.author }}</td>
-                    <td> {{ book.year }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
-    </div>
-
 {% endblock %}
