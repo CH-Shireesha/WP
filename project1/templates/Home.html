@@ -47,8 +47,8 @@ function bookdisplay(ele) {
             var htmltext = "<p id = 'isbnofbook'>"+data.isbn +"</p><ul>"+"<p id = 'title'>"+data.title+"</p><ul>"+"<p id = 'author'>"+data.author+"</p><ul>"+"<p id = 'year of publication'>"+data.year+"</p><ul>";
             for(var i = 0; i < data.reviews.length; i++) {
             console.log(data[i]);
-
-              //htmltext = htmltext + "<li><p>" + data.reviews[i]["userName"] + " ===> " + data.reviews[i]["feedback"] +"</p></li>"
+              
+              htmltext = htmltext + "<li><p>" + data.reviews[i]["userName"] + " ===> " + data.reviews[i]["feedback"] +"</p></li>"
             }
             htmltext = htmltext + "</ul>"
             $("#reviewresults").html(htmltext);
